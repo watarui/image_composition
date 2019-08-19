@@ -1,0 +1,45 @@
+{
+  // .editorconfigのtrim_trailing_whitespaceを優先
+  "files.trimTrailingWhitespace": false,
+  // 既定の改行コードをLFにする
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    ".idea": true,
+    ".mypy_cache": true,
+    ".venv": true,
+    "**/__pycache__": true
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  // PythonのPATH
+  "python.pythonPath": ".venv/bin/python",
+  // "python.formatting.provider": "autopep8",
+  "python.formatting.provider": "black",
+  // "python.formatting.blackArgs": ["--skip-string-normalization"],
+  // autopep8の引数
+  "python.formatting.autopep8Args": [
+    "--in-place",
+    "--aggressive",
+    "--aggressive"
+  ],
+  "python.autoComplete.addBrackets": true,
+  // 静的解析はpylintとflake8を併用
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintArgs": ["--load-plugins", "pylint_flask_sqlalchemy"],
+  // "python.linting.pylintArgs": ["--load-plugins", "pylint-flask"],
+  "python.linting.pep8Enabled": false,
+  "python.linting.flake8Enabled": true,
+  // Suppress `E501: line too long`
+  // Prioritize black format
+  "python.linting.flake8Args": ["--ignore=E501"],
+  "python.linting.lintOnSave": true,
+  "python.linting.mypyEnabled": true,
+  "python.sortImports.args": ["-rc", "--atomic"],
+  "restructuredtext.confPath": ""
+}

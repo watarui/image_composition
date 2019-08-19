@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+</head>
+
+<h1>This is index.</h1>
+
+<form action="/result" method="POST">
+  <table>
+    <tr>
+      <th>Firstname</th>
+      <th>Lastname</th>
+    </tr>
+    <tr>
+      <th><input type="text" value="" placeholder="firstname" name="firstname"></th>
+      <th><input type="text" value="" placeholder="lastname" name="lastname"></th>
+    </tr>
+  </table>
+  <p>シーン<br>
+    <input type="radio" name="scene" value="s1" checked>シーン1
+    <input type="radio" name="scene" value="s2">シーン2
+    <input type="radio" name="scene" value="s3">シーン3
+    <input type="radio" name="scene" value="s4">シーン4
+  </p>
+  <input type="submit" value="送信する">
+</form>

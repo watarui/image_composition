@@ -1,0 +1,38 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.html]
+indent_size = 2
+insert_final_newline = false
+
+[*.{scss,sass,css}]
+indent_size = 2
+
+[*.{js,ejs}]
+indent_size = 2
+
+[*.json]
+indent_size = 2
+insert_final_newline = unset
+
+[**/admin/js/vendor/**]
+indent_style = unset
+indent_size = unset
+
+[**.min.js]
+indent_style = unset
+insert_final_newline = unset
+
+[*.{md,markdown}]
+trim_trailing_whitespace = false
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
