@@ -4,14 +4,9 @@ from pathlib import Path
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import Flask, render_template, request, redirect, url_for
 from .controller import ImageEditor
-from .database import init_db
-from .models.models import Alphabet, Scene
 
 app = Flask(__name__)
 app.config.from_object("src.image_composition.config.Config")
-
-
-init_db(app)
 
 
 def generate(firstname, lastname, scene, output_filename="out"):

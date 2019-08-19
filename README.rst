@@ -40,23 +40,12 @@ poetry
 
     source ./.venv/bin/activate
 
-DB
-===
-
-.. code-block:: sql
-
-    CREATE DATABASE image_composition；
-
 Flask
 =====
 
 .. code-block:: sh
 
     export FLASK_APP="./src/image_composition/app.py"
-    # flask db init
-    # flask db migrate
-    flask db upgrade
-
     flask run --reload
 
     # app.run(debug=True) が効かない場合
