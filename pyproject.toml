@@ -10,6 +10,7 @@ flask = "^1.1"
 Pillow = "^6.1"
 itsdangerous = "^1.1"
 flask-wtf = "^0.14.2"
+apscheduler = "^3.6"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^18.3-alpha.0", allows-prereleases = true}
