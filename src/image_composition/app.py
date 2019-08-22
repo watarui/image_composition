@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, ValidationError
-from .controller import ImageEditor
+from .controller import ImageEditor, ImageRemover
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -87,8 +87,11 @@ def result(token=None):
             firstname = form.firstname.data
             lastname = form.lastname.data
             scene = request.form["scene"]
-
-            generate(firstname, lastname, scene, token)
+            # 画像合成処理
+            dst = generate(firstname, lastname, scene, token)
+            # 合成画像の削除スケジューラ起動
+            ir = ImageRemover(dst, app.config["EXPIRES_IN"])
+            ir.start()
 
             return redirect(url_for("result", token=token))
         return render_template("index.html", form=form)

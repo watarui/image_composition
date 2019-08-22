@@ -1,3 +1,7 @@
+import os
+import shutil
+from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
 from functools import reduce
 from PIL import Image
 
@@ -49,3 +53,25 @@ class ImageEditor:
 
     def concat_fonts(self, fonts):
         return reduce(self.__concat_fonts, fonts)
+
+
+class ImageRemover:
+    """
+    画像削除スケジューラ
+    """
+
+    def __init__(self, img, expires_in, date=datetime.now(), dst=os.sep + "tmp"):
+        self.img = img
+        self.expires_in = expires_in
+        self.date = date
+        self.dst = dst
+
+    def __rm(self):
+        shutil.move(self.img, self.dst)
+
+    def start(self):
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(
+            self.__rm, "date", run_date=self.date + timedelta(seconds=self.expires_in)
+        )
+        scheduler.start()
