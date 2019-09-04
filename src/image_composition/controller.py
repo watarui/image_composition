@@ -18,15 +18,27 @@ class ImageEditor:
     def composite(self, fg, bg, dst):
         b = Image.open(bg).copy().convert("RGBA")
         f = self.open(fg)
-        (x1, y1) = b.size
-        (x2, y2) = f.size
+        bw, bh = b.size
+        fw, fh = f.size
+
+        def fit(fw, fh, bw, bh):
+            """
+            背景にフィットするような前景のサイズを整数のタプルで返す。
+            """
+            # 背景に対する前景の比率
+            pw, ph = fw / bw, fh / bh
+            # 比率の大きな方を基準として補正
+            if pw <= ph:
+                w, h = fw / ph, bh
+            else:
+                w, h = bw, fh / pw
+            return int(w), int(h)
+
+        # 前景をリサイズ
+        f = f.resize(fit(fw, fh, bw, bh))
 
         # 基点
-        base = ((x1 - x2) // 2, (y1 - y2) // 2)
-
-        # 前景が背景からはみ出ないように縮小
-        # FIXME: はみ出しちゃうよ！
-        f.thumbnail((x1, y1))
+        base = ((bw - f.width) // 2, (bh - f.height) // 2)
 
         b.paste(f, base, f)
         b.save(dst)
