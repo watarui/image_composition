@@ -1,3 +1,16 @@
+# Dev Server
+.bash_history
+.bash_logout
+.bash_profile
+.bashrc
+.cache/
+.config/
+.python_history
+.ssh/
+.vimimfo
+site-packages
+www
+
 # Mac
 .DS_Store
 
