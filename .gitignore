@@ -7,7 +7,7 @@
 .config/
 .python_history
 .ssh/
-.vimimfo
+.viminfo
 site-packages
 www
 
