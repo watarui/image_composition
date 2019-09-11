@@ -7,11 +7,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, ValidationError
-from .controller import ImageEditor, ImageRemover
+from controller import ImageEditor, ImageRemover
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
-app.config.from_object("src.image_composition.config.Config")
+app.config.from_object("config.Config")
 
 
 def generate(firstname, lastname, scene, output_filename="out"):

@@ -39,6 +39,8 @@ poetry
 .. code-block:: sh
 
     source ./.venv/bin/activate
+    # 作成したモジュールを読み込むためのパスを通す
+    export PYTHONPATH="$HOME/path/to/image_composition/src/image_composition"
 
 Flask
 =====
