@@ -10,6 +10,9 @@
 .viminfo
 site-packages
 www
+uwsgi.sock
+/uwsgi.ini
+/.htpasswd
 
 # Mac
 .DS_Store
