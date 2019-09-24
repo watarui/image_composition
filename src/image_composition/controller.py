@@ -1,9 +1,10 @@
 import os
 import shutil
 from datetime import datetime, timedelta
-from apscheduler.schedulers.background import BackgroundScheduler
 from functools import reduce
+from typing import List
 from PIL import Image
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class ImageEditor:
@@ -68,27 +69,40 @@ class ImageEditor:
         b.paste(f, base, f)
         b.save(dst)
 
-    def __concat_fonts(self, f1, f2):
+    def __concat_fonts(self, f1, f2, ol):
         a = self.open(f1)
         b = self.open(f2)
+        aw, ah = a.size
+        bw, bh = b.size
+
+        # 重ね合わせの分だけ、幅を小さくする
+        aw = aw - ol
 
         # 結合後の画像は余白が透明のものを用意
-        img = Image.new(
-            "RGBA", (a.width + b.width, max(a.height, b.height)), (255, 255, 255, 0)
-        )
+        img = Image.new("RGBA", (aw + bw, max(ah, bh)), (255, 255, 255, 0))
 
         # 下揃え
         if a.height >= b.height:
-            img.paste(a, (0, 0))
-            img.paste(b, (a.width, (a.height - b.height)))
+            img.paste(a, (0, 0), a)
+            img.paste(b, (aw, ah - bh), b)
         else:
-            img.paste(a, (0, (b.height - a.height)))
-            img.paste(b, (a.width, 0))
+            img.paste(a, (0, bh - ah), a)
+            img.paste(b, (aw, 0), b)
 
         return img
 
-    def concat_fonts(self, fonts):
-        return reduce(self.__concat_fonts, fonts)
+    def concat_fonts(self, fonts: List[str], overlap: int = 0) -> Image.Image:
+        """
+        引数で渡された画像を順に合成していき、最終的に合成された画像オブジェクトを返す。
+
+        Parameters
+        ----------
+        fonts : list of str
+            合成する画像ファイルのパスのリスト
+        overlap : int
+            隣り合う画像ファイルの重なり
+        """
+        return reduce(lambda a, b: self.__concat_fonts(a, b, overlap), fonts)
 
 
 class ImageRemover:

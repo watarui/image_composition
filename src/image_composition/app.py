@@ -40,7 +40,7 @@ def generate(firstname, lastname, scene, output_filename="out"):
     dst = make_path(["static", "img", "tmp", output_filename + ".png"], parent_path)
 
     im = ImageEditor()
-    fg = im.concat_fonts(firstnames + lastnames)
+    fg = im.concat_fonts(firstnames + lastnames, app.config["FONTS_OVERLAP"])
     im.composite(
         fg,
         bg,

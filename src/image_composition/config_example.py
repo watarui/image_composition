@@ -21,5 +21,8 @@ class Development:
     # 前景の高さ方向の背景中心からのズレ（基準は前景下辺）
     FRONT_IMG_OFFSET_Y = 400
 
+    # フォントの重なり具合
+    FONTS_OVERLAP = 300
+
 
 Config = Development
