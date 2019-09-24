@@ -2,30 +2,30 @@ import os
 import shutil
 from datetime import datetime, timedelta
 from functools import reduce
-from typing import List
+from typing import List, Tuple, Union
 from PIL import Image
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class ImageEditor:
-    def is_Image(self, obj):
+    def is_Image(self, obj: object) -> bool:
         return type(obj) == Image.Image
 
-    def open(self, img):
+    def open(self, img: str) -> Image.Image:
         if self.is_Image(img):
             return img
         return Image.open(img).copy()
 
     def composite(
         self,
-        fg,
-        bg,
-        dst,
-        n=1,
+        fg: Union[Image.Image, str],
+        bg: Union[Image.Image, str],
+        dst: str,
+        n: Union[int, float] = 1,
         padding_y: int = 0,
         padding_x: int = 0,
         offset_y: int = 0,
-    ):
+    ) -> None:
         """
         画像を合成出力する。
         """
@@ -38,7 +38,12 @@ class ImageEditor:
         # 前景の高さをn倍に縮小する
         bh = bh * n
 
-        def fit(fw, fh, bw, bh):
+        def fit(
+            fw: Union[int, float],
+            fh: Union[int, float],
+            bw: Union[int, float],
+            bh: Union[int, float],
+        ) -> Tuple[int, int]:
             """
             背景にフィットするような前景のサイズを整数のタプルで返す。
             """
@@ -69,7 +74,7 @@ class ImageEditor:
         b.paste(f, base, f)
         b.save(dst)
 
-    def __concat_fonts(self, f1, f2, ol):
+    def __concat_fonts(self, f1: str, f2: str, ol: int) -> Image.Image:
         a = self.open(f1)
         b = self.open(f2)
         aw, ah = a.size
@@ -110,16 +115,22 @@ class ImageRemover:
     画像削除スケジューラ
     """
 
-    def __init__(self, img, expires_in, date=datetime.now(), dst=os.sep + "tmp"):
+    def __init__(
+        self,
+        img: str,
+        expires_in: int = 60,
+        date: datetime = datetime.now(),
+        dst: str = os.sep + "tmp",
+    ):
         self.img = img
         self.expires_in = expires_in
         self.date = date
         self.dst = dst
 
-    def __rm(self):
+    def __rm(self) -> None:
         shutil.move(self.img, self.dst)
 
-    def start(self):
+    def start(self) -> None:
         scheduler = BackgroundScheduler()
         scheduler.add_job(
             self.__rm, "date", run_date=self.date + timedelta(seconds=self.expires_in)

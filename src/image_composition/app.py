@@ -2,6 +2,7 @@ import os
 import re
 from functools import reduce
 from pathlib import Path
+from typing import List
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import Flask, render_template, request, redirect, url_for
 from flask_wtf import FlaskForm
@@ -14,17 +15,19 @@ csrf = CSRFProtect(app)
 app.config.from_object("config.Config")
 
 
-def generate(firstname, lastname, scene, output_filename="out"):
+def generate(
+    firstname: str, lastname: str, scene: str, output_filename: str = "out"
+) -> str:
     """
     画像を合成し、出力先のファイルパスを返す。
     """
 
-    def make_path(lst, acc=os.sep):
+    def make_path(lst: List[str], acc: str = os.sep) -> str:
         return reduce(lambda x, y: x + os.sep + y, lst, acc)
 
     parent_path = str(Path(__file__).resolve().parents[0])
 
-    def get_font_img(font):
+    def get_font_img(font: str) -> str:
         return make_path(
             [
                 "resources",
