@@ -81,7 +81,7 @@ class ImageEditor:
         bw, bh = b.size
 
         # 重ね合わせの分だけ、幅を小さくする
-        aw = aw - ol
+        # aw = aw - ol
 
         # 結合後の画像は余白が透明のものを用意
         img = Image.new("RGBA", (aw + bw, max(ah, bh)), (255, 255, 255, 0))

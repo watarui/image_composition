@@ -1,5 +1,15 @@
-from image_composition import __version__
+import unittest
+import image_composition.app as ic
 
 
-def test_version():
-    assert __version__ == '0.1.0'
+class TestImageComposition(unittest.TestCase):
+    def setUp(self):
+        self.app = ic.app.test_client()
+
+    def test_index(self):
+        response = self.app.get("/")
+        assert response.status_code == 200
+
+
+if __name__ == "__main__":
+    unittest.main()

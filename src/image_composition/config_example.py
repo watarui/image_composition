@@ -3,6 +3,8 @@ class Development:
     開発環境の設定
     """
 
+    APP_URL = "http://127.0.0.1:5000/"
+
     # Flask
     DEBUG = True
 
