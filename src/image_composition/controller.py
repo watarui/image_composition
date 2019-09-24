@@ -15,11 +15,27 @@ class ImageEditor:
             return img
         return Image.open(img).copy()
 
-    def composite(self, fg, bg, dst):
+    def composite(
+        self,
+        fg,
+        bg,
+        dst,
+        n=1,
+        padding_y: int = 0,
+        padding_x: int = 0,
+        offset_y: int = 0,
+    ):
+        """
+        画像を合成出力する。
+        """
         b = Image.open(bg).copy().convert("RGBA")
         f = self.open(fg)
         bw, bh = b.size
         fw, fh = f.size
+
+        # 背景の高さをn倍と見積もることで、
+        # 前景の高さをn倍に縮小する
+        bh = bh * n
 
         def fit(fw, fh, bw, bh):
             """
@@ -27,18 +43,27 @@ class ImageEditor:
             """
             # 背景に対する前景の比率
             pw, ph = fw / bw, fh / bh
-            # 比率の大きな方を基準として補正
-            if pw <= ph:
+            # 比率の大きな方、
+            # つまり前景と背景との間に余裕のない側を基準として補正
+            # もとの前景が背景より小さい場合は背景サイズを維持
+            if pw < 1 and (ph * n) < 1:
+                w, h = bw, bh
+            elif pw <= (ph * n):
                 w, h = fw / ph, bh
             else:
                 w, h = bw, fh / pw
-            return int(w), int(h)
+            return int(w) - padding_x, int(h) - padding_y
 
         # 前景をリサイズ
         f = f.resize(fit(fw, fh, bw, bh))
 
-        # 基点
-        base = ((bw - f.width) // 2, (bh - f.height) // 2)
+        # 背景に対する前景の基点（原点座標は左上端）
+        base = (
+            # 横は中央に配置
+            int((bw - f.width) / 2),
+            # 縦は中央よりoffset_yだけ上に配置
+            int((((bh / n) - f.height) / 2) - offset_y),
+        )
 
         b.paste(f, base, f)
         b.save(dst)
@@ -53,7 +78,6 @@ class ImageEditor:
         )
 
         # 下揃え
-        # TODO: 小文字の場合は下揃えとは限らない
         if a.height >= b.height:
             img.paste(a, (0, 0))
             img.paste(b, (a.width, (a.height - b.height)))

@@ -41,7 +41,15 @@ def generate(firstname, lastname, scene, output_filename="out"):
 
     im = ImageEditor()
     fg = im.concat_fonts(firstnames + lastnames)
-    im.composite(fg, bg, dst)
+    im.composite(
+        fg,
+        bg,
+        dst,
+        app.config["FRONT_IMG_N"],
+        app.config["FRONT_IMG_PADDING_Y"],
+        app.config["FRONT_IMG_PADDING_X"],
+        app.config["FRONT_IMG_OFFSET_Y"],
+    )
 
     return dst
 
