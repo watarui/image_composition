@@ -31,6 +31,9 @@ poetry
 
 .. code-block:: sh
 
+    # 処理系を明示して仮想環境を作る場合
+    # python3 -m venv .venv
+
     poetry install
 
 仮想環境のアクティベート
